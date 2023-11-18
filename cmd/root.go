@@ -11,47 +11,42 @@ import (
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "nyx command [-l language] [-d database] directory controller table",
+	Use:   "nyx command directory controller table [-d database]",
 	Short: "Nyx : the CLI library from the shadows.",
 	Long: `
-  .             *        .     .       .           .      
-        _   _           .               ,-,    .      *   
-.    . | \ | |    .          .  *      /.(         .      
-       |  \| |  _   _  __  __          \ {              . 
- *     |   ' | | | | | \ \/ /     .     '-'      *        
-       | |\  | | |_| |  >  <    .              .         .
-    .  \_| \_/  \__, | /_/\_\             *               
-                 __/ |        .                        .  
- .        .     |___/	.         .        .      .       
+  .             *        .     .       .           .        .       *  
+        _   _           .                   .      *     ,-,           
+.    . | \ | |    .          .  *               .       /.(    *      .
+       |  \| |  _   _  __  __          .                \ {            
+ *     |   ' | | | | | \ \/ /     .           *          '-'    .      
+       | |\  | | |_| |  >  <    .              .         .          .  
+    .  \_| \_/  \__, | /_/\_\             *                    .       
+                 __/ |        .                        .               
+ .        .     |___/	.         .        .      .         *        . 
 
 Nyx is the Greek goddess and personification of the
 night.
-	
+
 As such this CLI library helps you build your
 application from the shadows.
 
-nyx command [-l language] [-d database] directory controller table
+Usage:
+    nyx command directory controller table [-d database]
 
-Command __________________________________________________
-add                 Adds a controller and a model.
+Command:
+    add                 Adds a controller and a model
 
-Fields ___________________________________________________
-directory           The directory that holds the
-                    controller and the model folders.
-controller          The stem of your controller and
-                    model's name.
-table               The name of the related table in your
-                    database.
+Fields:
+    directory           The directory that holds the controller and
+                        the model folders
+    controller          The stem of your controller and model's name
+    table               The name of the related table in your database
 
-Flags ____________________________________________________
+Flags:
+    -h, --help         help for nyx
+    -d, --database     Specify the database's name
 
--l | --language     English and French are available.
--d | --database     Specify the database's name.
-
-Example : nyx -d WEBCARE configuration VilleV4 VILLE
-	
-The name of her Roman equivalent is Nox.
-nox will be an alias as of version 2.0.`,
+Example : nyx add configuration VilleV4 VILLE -d WEBCARE`,
 
 	// 	Long: `A longer description that spans multiple lines and likely contains
 	// examples and usage of using your application. For example:
