@@ -12,6 +12,7 @@ import (
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "nyx command directory controller table [-d database]",
+	Aliases: []string{"nox"},
 	Short: "Nyx : the CLI library from the shadows.",
 	Long: `
   .             *        .     .       .           .        .       *  
