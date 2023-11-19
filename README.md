@@ -4,6 +4,7 @@ first try at developing my own cli-app
 
 As a personal remainder, this is what the table looks like :
 
+```
 +-------------+-------------+------+-----+---------+----------------+
 | Field       | Type        | Null | Key | Default | Extra          |
 +-------------+-------------+------+-----+---------+----------------+
@@ -12,6 +13,7 @@ As a personal remainder, this is what the table looks like :
 | code_postal | varchar(5)  | NO   |     | NULL    |                |
 | departement | varchar(30) | NO   |     | NULL    |                |
 +-------------+-------------+------+-----+---------+----------------+
+```
 
 ## Results so far : SUCCESSFUL
 
