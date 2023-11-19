@@ -4,11 +4,33 @@ Copyright © 2023 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
+	"database/sql"
 	"fmt"
 	"os"
+	"strings"
 
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/spf13/cobra"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 )
+
+type CityDescription struct {
+    Field string `json:"Field"`
+    Type string `json:"Type"`
+    Null string `json:"Null"`
+    Key sql.NullString
+    Default sql.NullString
+    Extra sql.NullString
+}
+
+func chooseType(str string) string {
+	if len(str) > 7 && str[:7] == "varchar" {
+		return "string"
+	} else {
+		return str
+	}
+}
 
 // addCmd represents the add command
 var addCmd = &cobra.Command{
@@ -47,10 +69,57 @@ to quickly create a Cobra application.`,
 			}
 			defer file.Close()
 
+			// Obviously those infos should be hidden from prying eyes
+			db, err := sql.Open("mysql", "root:root@tcp(172.20.0.2:3306)/insee")
+			if err != nil {
+				// panic(err.Error())
+				fmt.Println("Could not connect to DB !", err)
+				return
+			}
+			defer db.Close()
+
+			results, err := db.Query("DESC CITY")
+			if err !=nil {
+				fmt.Println("Could not query !", err)
+				return
+			}
+
 			fmt.Fprintf(file, "<?php\n\n")
 			fmt.Fprintf(file, "class %s {\n\n", controllerName)
-			fmt.Fprintf(file, "\tpublic function __constructor() {}\n\n")
-			fmt.Fprintf(file, "}\n")
+			fmt.Fprintf(file, "\t// properties\n")
+
+			var cityDescriptions []CityDescription
+			for results.Next() {
+				var cityDescription CityDescription
+				err = results.Scan(&cityDescription.Field, &cityDescription.Type, &cityDescription.Null, &cityDescription.Key, &cityDescription.Default, &cityDescription.Extra)
+				if err !=nil {
+					fmt.Println("Could not scan result !", err)
+					return
+				}
+				cityDescriptions = append(cityDescriptions, cityDescription)
+				fmt.Fprintf(file, "\tprivate %s;\n", cityDescription.Field)
+			}
+
+			fmt.Fprintf(file, "\n\tpublic function __constructor() {}\n")
+
+			fmt.Fprintf(file, "\n\t// Some methods begining with letter a to f\n")
+			fmt.Fprintf(file, "\n\t// Getters\n")
+			
+			for _, citydesc := range cityDescriptions {
+				splitStrs := strings.Split(citydesc.Field, "_")
+				var capitalizeds []string
+				for _, str := range splitStrs {
+					capitalizeds = append(capitalizeds, cases.Title(language.Und).String(str))
+				}
+
+				fmt.Fprintf(file, "\tpublic function get%s() { return (%s) $this->%s; }\n", strings.Join(capitalizeds, ""), chooseType(citydesc.Type), citydesc.Field)
+			}
+
+			fmt.Fprintf(file, "\n\t// Some methods begining with letter h to z\n")
+
+			fmt.Fprintf(file, "\n\t// TODO setters\n")
+			
+			fmt.Fprintf(file, "\n}\n")
 
 			fmt.Println("CController.php was created")
 		}

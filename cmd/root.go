@@ -47,7 +47,7 @@ Flags:
     -h, --help         help for nyx
     -d, --database     Specify the database's name
 
-Example : nyx add configuration VilleV4 VILLE -d WEBCARE`,
+Example : nyx add controller VilleV4 CITY -d insee`,
 
 	// 	Long: `A longer description that spans multiple lines and likely contains
 	// examples and usage of using your application. For example:
@@ -79,7 +79,7 @@ func init() {
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
 
 
